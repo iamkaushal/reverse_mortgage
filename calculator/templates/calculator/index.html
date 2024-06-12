@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reverse Mortgage Calculator</title>
+    <script>
+        function calculatePrincipalLimit() {
+            const age = document.getElementById('id_age').value;
+            const homeValue = document.getElementById('id_home_value').value;
+            const margin = document.getElementById('id_margin').value;
+
+            if (age && homeValue && margin) {
+                fetch(`/calculate/?age=${age}&home_value=${homeValue}&margin=${margin}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('principalLimit').innerText = `Principal Limit: ${data.principalLimit.toFixed(2)}`;
+                    });
+            }
+        }
+
+        document.getElementById('id_margin').addEventListener('change', calculatePrincipalLimit);
+        document.getElementById('id_age').addEventListener('input', calculatePrincipalLimit);
+        document.getElementById('id_home_value').addventListener('input', calculatePrincipalLimit);
+    </script>
+</head>
+<body>
+    <h1>Reverse Mortgage Calculator</h1>
+    <form>
+        {% csrf_token %}
+        {{ form.as_p }}
+    </form>
+    <p id="principalLimit">Principal Limit: </p>
+    <script>
+        document.getElementById('id_margin').addEventListener('change', calculatePrincipalLimit);
+        document.getElementById('id_age').addEventListener('input', calculatePrincipalLimit);
+        document.getElementById('id_home_value').addEventListener('input', calculatePrincipalLimit);
+    </script>
+</body>
+</html>
